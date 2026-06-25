@@ -1,0 +1,127 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Price Prediction</title>
+
+  <!-- BootStrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark shadow">
+    <a class="navbar-brand mx-auto glow-text" href="/">✈️ SkyFare Predictor</a>
+  </nav>
+
+  <div class="container mt-5">
+    <form action="\predict" method="post" class="fade-in">
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card glass-card">
+            <div class="card-body">
+              <h5 class="card-title">🕒 Departure Date</h5>
+              <input type="datetime-local" name="Dep_Time" class="form-control" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card glass-card">
+            <div class="card-body">
+              <h5 class="card-title">🕓 Arrival Date</h5>
+              <input type="datetime-local" name="Arrival_Time" class="form-control" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card glass-card">
+            <div class="card-body">
+              <h5 class="card-title">📍 Source</h5>
+              <select name="Source" class="form-control" required>
+                <option value="Delhi">Delhi</option>
+                <option value="Kolkata">Kolkata</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Chennai">Chennai</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card glass-card">
+            <div class="card-body">
+              <h5 class="card-title">🎯 Destination</h5>
+              <select name="Destination" class="form-control" required>
+                <option value="Cochin">Cochin</option>
+                <option value="Delhi">Delhi</option>
+                <option value="New Delhi">New Delhi</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Kolkata">Kolkata</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card glass-card">
+            <div class="card-body">
+              <h5 class="card-title">🛑 Stopage</h5>
+              <select name="stops" class="form-control" required>
+                <option value="0">Non-Stop</option>
+                <option value="1">1 Stop</option>
+                <option value="2">2 Stops</option>
+                <option value="3">3 Stops</option>
+                <option value="4">4 Stops</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="card glass-card">
+            <div class="card-body">
+              <h5 class="card-title">✈️ Airline</h5>
+              <select name="airline" class="form-control" required>
+                <option value="Jet Airways">Jet Airways</option>
+                <option value="IndiGo">IndiGo</option>
+                <option value="Air India">Air India</option>
+                <option value="Multiple carriers">Multiple carriers</option>
+                <option value="SpiceJet">SpiceJet</option>
+                <option value="Vistara">Vistara</option>
+                <option value="Air Asia">Air Asia</option>
+                <option value="GoAir">GoAir</option>
+                <option value="Jet Airways Business">Jet Airways Business</option>
+                <option value="Trujet">Trujet</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block crazy-btn">
+        🚀 Predict My Fare
+      </button>
+    </form>
+
+    <div class="mt-5 fade-in">
+      <h3 class="glow-text">{{ prediction_text }}</h3>
+      <p class="footer">© 2025 Flight Price Predictor</p>
+    </div>
+  </div>
+
+</body>
+
+</html>
