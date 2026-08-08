@@ -1,46 +1,95 @@
-# ✈️ SkyFare-Predictor
+# ✈️ SkyFare Predictor
 
-A Machine Learning project to predict flight ticket prices based on various features such as airline, source, destination, total stops, and duration.  
-This project is implemented in **Python** using **pandas, numpy, scikit-learn, matplotlib, seaborn, and Jupyter Notebook**.
-
----
-
-## 📌 Features
-- Data preprocessing and cleaning  
-- Exploratory Data Analysis (EDA) with visualizations  
-- Feature engineering for categorical & numerical variables  
-- Model training and evaluation using ML algorithms  
-- Price prediction with high accuracy  
+An end-to-end Machine Learning web application that predicts flight ticket prices using **Random Forest Regression**. The application allows users to enter flight details through a clean web interface and instantly predicts the estimated airfare.
 
 ---
 
-## 🛠️ Tech Stack
-- **Language:** Python  
-- **Libraries:** pandas, numpy, scikit-learn, matplotlib, seaborn  
-- **Environment:** Jupyter Notebook  
+## 🌐 Live Demo
+
+🚀 https://skyfare-predictor.onrender.com
 
 ---
 
-## 🚀 Installation & Setup
+## 📸 Preview
 
-Clone the repository:
-```bash
-git clone https://github.com/anshuraj20/SkyFare-Predictor.git
-cd SkyFare-Predictor
+![SkyFare Predictor](images/preview.png)
+
+---
+
+# ✨ Features
+
+- Predict flight ticket prices instantly
+- User-friendly Flask web interface
+- Random Forest Regression model
+- Feature Engineering & Data Preprocessing
+- Responsive UI
+- Deployed on Render
+- Real-time predictions
+
+---
+
+# 🛠️ Tech Stack
+
+### Machine Learning
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+
+### Backend
+- Flask
+- Gunicorn
+
+### Frontend
+- HTML
+- CSS
+
+### Visualization
+- Matplotlib
+- Seaborn
+
+### Deployment
+- Render
+
+---
+
+# 📂 Project Structure
+
 ```
-Install dependencies:
-```bash
-pip install -r requirements.txt
+SkyFare-Predictor/
+│
+├── Flight Fare/
+│   ├── Data_Train.xlsx
+│   ├── Test_set.xlsx
+│   └── Sample_submission.xlsx
+│
+├── images/
+│   └── preview.png
+│
+├── static/
+│   └── css/
+│       └── styles.css
+│
+├── templates/
+│   └── home.html
+│
+├── app.py
+├── flight_price.ipynb
+├── flight_rf.pkl
+├── requirements.txt
+├── Procfile
+├── .python-version
+├── README.md
+└── LICENSE
 ```
-Run the Jupyter Notebook:
-```bash
-jupyter notebook flight_price.ipynb
-```
+
 ---
 
-📊 Dataset
+# 📊 Dataset
 
-The dataset contains flight information with columns such as:
+The model is trained using historical Indian flight fare data.
+
+### Features
 
 - Airline
 - Date of Journey
@@ -49,27 +98,121 @@ The dataset contains flight information with columns such as:
 - Route
 - Total Stops
 - Duration
-- Price (Target variable)
+- Additional Information
 
-🗂️ The dataset is uploaded in the repository under the folder  Flight Fare/.
+### Target
 
----
+- Price
 
-📈 Model Training
-
-- Data preprocessing with handling missing values & categorical encoding
-- Splitting dataset into train & test sets
-- Training models (Random Forest, Decision Tree, etc.)
-- Evaluating performance using RMSE, R² Score
+Dataset files are available inside the **Flight Fare** folder.
 
 ---
 
-📂 Project Structure
+# 🤖 Machine Learning Workflow
+
+- Data Cleaning
+- Handling Missing Values
+- Feature Engineering
+- Label Encoding
+- Model Training
+- Random Forest Regression
+- Model Evaluation
+- Model Serialization using Pickle
+- Flask Deployment
+
+---
+
+# 📈 Model
+
+**Algorithm Used**
+
+- Random Forest Regressor
+
+The trained model is stored as:
+
+```
+flight_rf.pkl
+```
+
+---
+
+# 🚀 Installation
+
+Clone the repository
 
 ```bash
-SkyFare-Predictor/
-│── flight_price.ipynb   # Main notebook
-│── requirements.txt     # Python dependencies
-│── README.md            # Project documentation
-│── .gitignore           # Ignored files
+git clone https://github.com/ayushhmishhra/SkyFare-Predictor.git
 ```
+
+Move into the project directory
+
+```bash
+cd SkyFare-Predictor
+```
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the application
+
+```bash
+python app.py
+```
+
+Open your browser
+
+```
+http://127.0.0.1:5000
+```
+
+---
+
+# 🧪 Example Prediction
+
+### Input
+
+- Source : Delhi
+- Destination : Cochin
+- Airline : Jet Airways
+- Stops : Non-Stop
+
+### Output
+
+```
+Predicted Fare : ₹6697.60
+```
+
+---
+
+# 🔮 Future Improvements
+
+- Live Flight API Integration
+- Airline Price Trend Analysis
+- Model Explainability
+- Docker Deployment
+- Cloud Database Support
+- User Authentication
+- Dark Mode UI
+
+---
+
+# 👨‍💻 Author
+
+**Ayush Mishra**
+
+GitHub
+
+https://github.com/ayushhmishhra
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+⭐ If you found this project useful, don't forget to **Star** the repository.
