@@ -1,126 +1,2546 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flight Price Prediction</title>
 
-  <!-- BootStrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <meta charset="UTF-8">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkyFare Predictor | Flight Fare Prediction</title>
+
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Professional Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: "Inter", Arial, sans-serif;
+
+            color: #111827;
+
+            background: #f5f7fa;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .top-nav {
+
+            height: 76px;
+
+            background: #ffffff;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 0 5%;
+
+            gap: 30px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+        }
+
+
+        /* Logo */
+
+        .logo {
+
+            min-width: 215px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #0875d1;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+
+        .logo:hover {
+            color: #0875d1;
+        }
+
+
+        .logo-icon {
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 8px;
+
+            background: #0875d1;
+
+            color: #ffffff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 18px;
+
+            transform: rotate(-8deg);
+        }
+
+
+        .logo small {
+
+            display: block;
+
+            color: #777777;
+
+            font-size: 8px;
+
+            font-weight: 500;
+
+            letter-spacing: 0.7px;
+
+            margin-top: -1px;
+        }
+
+
+        /* Menu */
+
+        .main-menu {
+
+            display: flex;
+
+            align-items: center;
+
+            height: 100%;
+
+            gap: 3px;
+        }
+
+
+        .menu-item {
+
+            height: 100%;
+
+            min-width: 68px;
+
+            padding: 0 10px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 4px;
+
+            color: #333333;
+
+            font-size: 12px;
+
+            font-weight: 500;
+
+            border-bottom: 3px solid transparent;
+
+            transition: 0.2s ease;
+        }
+
+
+        .menu-icon {
+
+            font-size: 17px;
+
+            color: #333333;
+        }
+
+
+        .menu-item:hover {
+
+            background: #f3f7fb;
+
+            color: #0875d1;
+        }
+
+
+        .menu-item.active {
+
+            background: #edf6ff;
+
+            color: #0875d1;
+
+            border-bottom-color: #0875d1;
+        }
+
+
+        .menu-item.active .menu-icon {
+
+            color: #0875d1;
+        }
+
+
+        /* Right side */
+
+        .nav-right {
+
+            margin-left: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            white-space: nowrap;
+        }
+
+
+        .customer-service {
+
+            color: #333333;
+
+            font-size: 13px;
+
+            font-weight: 500;
+        }
+
+
+        .login-btn {
+
+            padding: 10px 18px;
+
+            border-radius: 6px;
+
+            background: #0875d1;
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+
+        .login-btn:hover {
+
+            background: #075fa8;
+
+            color: #ffffff;
+        }
+
+
+
+        /* =====================================================
+           HERO / SEARCH
+        ===================================================== */
+
+        .hero-section {
+
+            min-height: 455px;
+
+            padding: 50px 5% 45px;
+
+            background:
+
+                linear-gradient(
+                    110deg,
+                    #0875d1 0%,
+                    #158be0 48%,
+                    #49c5e8 100%
+                );
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .hero-section::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 520px;
+
+            height: 520px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.06);
+
+            top: -290px;
+
+            right: -100px;
+        }
+
+
+        .hero-section::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 360px;
+
+            height: 360px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.05);
+
+            bottom: -270px;
+
+            left: -100px;
+        }
+
+
+        .hero-title {
+
+            text-align: center;
+
+            color: #ffffff;
+
+            font-size: 30px;
+
+            font-weight: 700;
+
+            margin: 0 0 24px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+
+        /* =====================================================
+           TRIP TYPES
+        ===================================================== */
+
+        .trip-types {
+
+            width: 90%;
+
+            max-width: 1180px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            position: relative;
+
+            z-index: 3;
+        }
+
+
+        .trip-type {
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            padding: 8px 18px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+        }
+
+
+        .trip-type.active {
+
+            background: #ffffff;
+
+            color: #0875d1;
+        }
+
+
+
+        /* =====================================================
+           SEARCH FORM
+        ===================================================== */
+
+        .search-box {
+
+            width: 90%;
+
+            max-width: 1180px;
+
+            margin: 0 auto;
+
+            background: #ffffff;
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 14px 38px rgba(0,0,0,0.18);
+
+            position: relative;
+
+            z-index: 3;
+        }
+
+
+        .search-fields {
+
+            display: grid;
+
+            grid-template-columns:
+
+                1.05fr
+                1.05fr
+                1.15fr
+                1.15fr
+                0.9fr
+                1.05fr
+                150px;
+        }
+
+
+        .search-field {
+
+            min-height: 105px;
+
+            padding: 15px 16px;
+
+            border-right: 1px solid #e5e7eb;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+        }
+
+
+        .field-label {
+
+            color: #777777;
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        /* Actual inputs */
+
+        .top-input {
+
+            width: 100%;
+
+            border: none;
+
+            outline: none;
+
+            background: transparent;
+
+            color: #111827;
+
+            font-family: "Inter", Arial, sans-serif;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            padding: 0;
+
+            margin: 0;
+
+            min-width: 0;
+        }
+
+
+        .top-input option {
+
+            background: #ffffff;
+
+            color: #111827;
+        }
+
+
+        .top-input::-webkit-calendar-picker-indicator {
+
+            cursor: pointer;
+
+            opacity: 0.65;
+        }
+
+
+        .field-sub {
+
+            color: #888888;
+
+            font-size: 10px;
+
+            margin-top: 5px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+
+
+        /* =====================================================
+           PREDICT BUTTON
+        ===================================================== */
+
+        .search-action {
+
+            min-height: 105px;
+
+            border: none;
+
+            background: #ff6b00;
+
+            color: #ffffff;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .search-action:hover {
+
+            background: #e85f00;
+        }
+
+
+        .search-action:active {
+
+            transform: scale(0.99);
+        }
+
+
+
+        /* =====================================================
+           SPECIAL FARES
+        ===================================================== */
+
+        .special-fares {
+
+            width: 90%;
+
+            max-width: 1180px;
+
+            margin: 20px auto 0;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            position: relative;
+
+            z-index: 3;
+
+            overflow-x: auto;
+        }
+
+
+        .special-title {
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            min-width: 115px;
+        }
+
+
+        .special-option {
+
+            padding: 9px 15px;
+
+            border: 1px solid rgba(255,255,255,0.45);
+
+            border-radius: 6px;
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            background: rgba(255,255,255,0.05);
+
+            white-space: nowrap;
+
+            transition: 0.2s ease;
+        }
+
+
+        .special-option:hover {
+
+            background: rgba(255,255,255,0.14);
+        }
+
+
+        .special-option strong {
+
+            display: block;
+
+            font-size: 12px;
+
+            margin-bottom: 2px;
+        }
+
+
+
+        /* =====================================================
+           RESULT AREA
+        ===================================================== */
+
+        .prediction-area {
+
+            background: #ffffff;
+
+            padding: 42px 5% 60px;
+        }
+
+
+        .section-container {
+
+            width: 90%;
+
+            max-width: 1180px;
+
+            margin: auto;
+        }
+
+
+        .breadcrumb {
+
+            color: #777777;
+
+            font-size: 13px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .breadcrumb span {
+
+            color: #0875d1;
+        }
+
+
+        .result-card {
+
+            padding: 34px;
+
+            border: 1px solid #dce4ec;
+
+            border-radius: 8px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #f6fbff
+                );
+
+            text-align: center;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.05);
+        }
+
+
+        .result-label {
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .result-value {
+
+            color: #0875d1;
+
+            font-size: 34px;
+
+            font-weight: 800;
+
+            line-height: 1.2;
+        }
+
+
+        .result-note {
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            margin-top: 10px;
+        }
+
+
+        .no-result {
+
+            text-align: center;
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            padding: 15px;
+        }
+
+
+
+        /* =====================================================
+           SECTION HEADINGS
+        ===================================================== */
+
+        .section-heading {
+
+            text-align: center;
+
+            margin: 0 0 10px;
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+            color: #111827;
+        }
+
+
+        .section-subheading {
+
+            text-align: center;
+
+            color: #6b7280;
+
+            font-size: 14px;
+
+            margin: 0 0 38px;
+        }
+
+
+
+        /* =====================================================
+           OFFERS
+        ===================================================== */
+
+        .offers-section {
+
+            background: #f5f7fa;
+
+            padding: 60px 5%;
+        }
+
+
+        .offer-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .offer-card {
+
+            min-height: 210px;
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+            position: relative;
+
+            color: #ffffff;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: flex-end;
+
+            padding: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #075fa8,
+                    #3cb6df
+                );
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.08);
+
+            transition: 0.25s ease;
+        }
+
+
+        .offer-card:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,0.12);
+        }
+
+
+        .offer-card:nth-child(2) {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #263c80,
+                    #0875d1
+                );
+        }
+
+
+        .offer-card:nth-child(3) {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #174b63,
+                    #27a7c8
+                );
+        }
+
+
+        .offer-tag {
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            opacity: 0.85;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .offer-card h3 {
+
+            margin: 0 0 8px;
+
+            font-size: 20px;
+
+            font-weight: 700;
+        }
+
+
+        .offer-card p {
+
+            margin: 0;
+
+            font-size: 12px;
+
+            opacity: 0.9;
+
+            line-height: 1.5;
+        }
+
+
+
+        /* =====================================================
+           HOW IT WORKS
+        ===================================================== */
+
+        .how-section {
+
+            padding: 65px 5%;
+
+            background: #ffffff;
+        }
+
+
+        .steps {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 25px;
+
+            margin-top: 35px;
+        }
+
+
+        .step {
+
+            padding: 28px;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 8px;
+
+            background: #ffffff;
+
+            transition: 0.2s ease;
+        }
+
+
+        .step:hover {
+
+            border-color: #b9d8ef;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.05);
+        }
+
+
+        .step-number {
+
+            width: 38px;
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #eaf5ff;
+
+            color: #0875d1;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+
+        .step h3 {
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            margin-bottom: 9px;
+        }
+
+
+        .step p {
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin: 0;
+        }
+
+
+
+        /* =====================================================
+           WHY SKYFARE
+        ===================================================== */
+
+        .why-section {
+
+            padding: 60px 5%;
+
+            background: #f5f7fa;
+        }
+
+
+        .why-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-top: 35px;
+        }
+
+
+        .why-card {
+
+            padding: 25px;
+
+            background: #ffffff;
+
+            border: 1px solid #e1e5ea;
+
+            border-radius: 8px;
+
+            transition: 0.2s ease;
+        }
+
+
+        .why-card:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 22px rgba(0,0,0,0.06);
+        }
+
+
+        .why-card h3 {
+
+            font-size: 15px;
+
+            margin-bottom: 8px;
+
+            font-weight: 700;
+        }
+
+
+        .why-card p {
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            margin: 0;
+        }
+
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            background: #111827;
+
+            color: #9ca3af;
+
+            padding: 50px 5% 25px;
+        }
+
+
+        .footer-grid {
+
+            width: 90%;
+
+            max-width: 1180px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                2fr
+                1fr
+                1fr
+                1fr;
+
+            gap: 40px;
+        }
+
+
+        .footer-brand {
+
+            color: #ffffff;
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+
+        .footer-about {
+
+            max-width: 330px;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .footer h4 {
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .footer a {
+
+            display: block;
+
+            color: #9ca3af;
+
+            font-size: 12px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .footer a:hover {
+
+            color: #ffffff;
+        }
+
+
+        .footer-bottom {
+
+            width: 90%;
+
+            max-width: 1180px;
+
+            margin: 35px auto 0;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #293241;
+
+            text-align: center;
+
+            font-size: 11px;
+        }
+
+
+
+        /* =====================================================
+           ANIMATION
+        ===================================================== */
+
+        .fade-in {
+
+            animation:
+                fadeIn 0.5s ease;
+        }
+
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(12px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1200px) {
+
+            .main-menu {
+
+                display: none;
+            }
+
+
+            .search-fields {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+
+            .search-action {
+
+                min-height: 70px;
+
+                grid-column:
+                    span 3;
+            }
+
+
+            .search-field {
+
+                border-bottom:
+                    1px solid #e5e7eb;
+            }
+
+
+            .offer-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .why-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .top-nav {
+
+                height: 65px;
+
+                padding: 0 4%;
+            }
+
+
+            .logo {
+
+                min-width: auto;
+
+                font-size: 18px;
+            }
+
+
+            .logo small {
+
+                display: none;
+            }
+
+
+            .nav-right {
+
+                gap: 8px;
+            }
+
+
+            .customer-service {
+
+                display: none;
+            }
+
+
+            .login-btn {
+
+                padding:
+                    8px 12px;
+
+                font-size: 11px;
+            }
+
+
+            .hero-section {
+
+                padding:
+                    35px 0 35px;
+            }
+
+
+            .hero-title {
+
+                font-size: 24px;
+
+                margin-bottom: 20px;
+            }
+
+
+            .trip-types {
+
+                width: 94%;
+            }
+
+
+            .search-box {
+
+                width: 94%;
+            }
+
+
+            .search-fields {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .search-field {
+
+                min-height: 85px;
+
+                border-right: none;
+
+                border-bottom:
+                    1px solid #e5e7eb;
+            }
+
+
+            .search-action {
+
+                grid-column:
+                    span 1;
+
+                min-height: 60px;
+            }
+
+
+            .special-fares {
+
+                width: 94%;
+
+                overflow-x: auto;
+
+                padding-bottom: 5px;
+            }
+
+
+            .special-option {
+
+                min-width: 145px;
+
+                flex-shrink: 0;
+            }
+
+
+            .prediction-area {
+
+                padding:
+                    35px 4% 50px;
+            }
+
+
+            .section-container {
+
+                width: 94%;
+            }
+
+
+            .result-card {
+
+                padding: 25px 18px;
+            }
+
+
+            .result-value {
+
+                font-size: 28px;
+            }
+
+
+            .offers-section,
+            .how-section,
+            .why-section {
+
+                padding-left: 4%;
+
+                padding-right: 4%;
+            }
+
+
+            .offer-grid,
+            .steps,
+            .why-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .footer-grid {
+
+                width: 94%;
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .footer-about {
+
+                grid-column:
+                    span 2;
+            }
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark shadow">
-    <a class="navbar-brand mx-auto glow-text" href="/">✈️ SkyFare Predictor</a>
-  </nav>
 
-  <div class="container mt-5">
-    <form action="\predict" method="post" class="fade-in">
+    <!-- =====================================================
+         NAVBAR
+    ===================================================== -->
 
-      <div class="row">
-        <div class="col-md-6 mb-4">
-          <div class="card glass-card">
-            <div class="card-body">
-              <h5 class="card-title">🕒 Departure Date</h5>
-              <input type="datetime-local" name="Dep_Time" class="form-control" required>
+    <header class="top-nav">
+
+
+        <!-- LOGO -->
+
+        <a href="#" class="logo">
+
+            <div class="logo-icon">
+                ✈
             </div>
-          </div>
+
+            <div>
+
+                SkyFare Predictor
+
+                <small>
+                    AI FLIGHT FARE ESTIMATION
+                </small>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- MENU -->
+
+        <nav class="main-menu">
+
+
+            <a href="#" class="menu-item active">
+
+                <span class="menu-icon">
+                    ✈
+                </span>
+
+                Flights
+
+            </a>
+
+
+            <a href="#offers" class="menu-item">
+
+                <span class="menu-icon">
+                    ▦
+                </span>
+
+                Hotels
+
+            </a>
+
+
+            <a href="#offers" class="menu-item">
+
+                <span class="menu-icon">
+                    ▤
+                </span>
+
+                Trains
+
+            </a>
+
+
+            <a href="#offers" class="menu-item">
+
+                <span class="menu-icon">
+                    ▰
+                </span>
+
+                Bus
+
+            </a>
+
+
+            <a href="#offers" class="menu-item">
+
+                <span class="menu-icon">
+                    ◉
+                </span>
+
+                Holidays
+
+            </a>
+
+
+            <a href="#offers" class="menu-item">
+
+                <span class="menu-icon">
+                    ▱
+                </span>
+
+                Cabs
+
+            </a>
+
+
+            <a href="#offers" class="menu-item">
+
+                <span class="menu-icon">
+                    ▣
+                </span>
+
+                Visa
+
+            </a>
+
+
+            <a href="#how-it-works" class="menu-item">
+
+                <span class="menu-icon">
+                    •••
+                </span>
+
+                More
+
+            </a>
+
+        </nav>
+
+
+
+        <!-- RIGHT -->
+
+        <div class="nav-right">
+
+            <span class="customer-service">
+                ☎ Customer Service
+            </span>
+
+
+            <a href="#" class="login-btn">
+                Login / Signup
+            </a>
+
         </div>
 
-        <div class="col-md-6 mb-4">
-          <div class="card glass-card">
-            <div class="card-body">
-              <h5 class="card-title">🕓 Arrival Date</h5>
-              <input type="datetime-local" name="Arrival_Time" class="form-control" required>
-            </div>
-          </div>
-        </div>
-      </div>
+    </header>
 
-      <div class="row">
-        <div class="col-md-6 mb-4">
-          <div class="card glass-card">
-            <div class="card-body">
-              <h5 class="card-title">📍 Source</h5>
-              <select name="Source" class="form-control" required>
-                <option value="Delhi">Delhi</option>
-                <option value="Kolkata">Kolkata</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Chennai">Chennai</option>
-              </select>
-            </div>
-          </div>
-        </div>
 
-        <div class="col-md-6 mb-4">
-          <div class="card glass-card">
-            <div class="card-body">
-              <h5 class="card-title">🎯 Destination</h5>
-              <select name="Destination" class="form-control" required>
-                <option value="Cochin">Cochin</option>
-                <option value="Delhi">Delhi</option>
-                <option value="New Delhi">New Delhi</option>
-                <option value="Hyderabad">Hyderabad</option>
-                <option value="Kolkata">Kolkata</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-4">
-          <div class="card glass-card">
-            <div class="card-body">
-              <h5 class="card-title">🛑 Stopage</h5>
-              <select name="stops" class="form-control" required>
-                <option value="0">Non-Stop</option>
-                <option value="1">1 Stop</option>
-                <option value="2">2 Stops</option>
-                <option value="3">3 Stops</option>
-                <option value="4">4 Stops</option>
-              </select>
+    <!-- =====================================================
+         HERO + ACTUAL PREDICTION FORM
+    ===================================================== -->
+
+    <section class="hero-section">
+
+
+        <h1 class="hero-title">
+            Flight Fare Prediction
+        </h1>
+
+
+
+        <!-- TRIP TYPE -->
+
+        <div class="trip-types">
+
+            <div class="trip-type active">
+                One-Way
             </div>
-          </div>
+
+            <div class="trip-type">
+                Round-Trip
+            </div>
+
+            <div class="trip-type">
+                Multi-City
+            </div>
+
         </div>
 
-        <div class="col-md-6 mb-4">
-          <div class="card glass-card">
-            <div class="card-body">
-              <h5 class="card-title">✈️ Airline</h5>
-              <select name="airline" class="form-control" required>
-                <option value="Jet Airways">Jet Airways</option>
-                <option value="IndiGo">IndiGo</option>
-                <option value="Air India">Air India</option>
-                <option value="Multiple carriers">Multiple carriers</option>
-                <option value="SpiceJet">SpiceJet</option>
-                <option value="Vistara">Vistara</option>
-                <option value="Air Asia">Air Asia</option>
-                <option value="GoAir">GoAir</option>
-                <option value="Jet Airways Business">Jet Airways Business</option>
-                <option value="Trujet">Trujet</option>
-              </select>
+
+
+        <!-- =================================================
+             ACTUAL FORM
+        ================================================= -->
+
+        <form
+            action="/predict"
+            method="POST"
+            id="prediction-form"
+        >
+
+
+            <div class="search-box">
+
+
+                <div class="search-fields">
+
+
+                    <!-- ======================================
+                         SOURCE
+                    ======================================= -->
+
+                    <div class="search-field">
+
+                        <div class="field-label">
+                            FROM
+                        </div>
+
+
+                        <select
+                            name="Source"
+                            class="top-input"
+                            required
+                        >
+
+                            <option value="Delhi">
+                                Delhi
+                            </option>
+
+                            <option value="Banglore">
+                                Banglore
+                            </option>
+
+                            <option value="Chennai">
+                                Chennai
+                            </option>
+
+                            <option value="Kolkata">
+                                Kolkata
+                            </option>
+
+                            <option value="Mumbai">
+                                Mumbai
+                            </option>
+
+                        </select>
+
+
+                        <div class="field-sub">
+                            Departure city
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         DESTINATION
+                    ======================================= -->
+
+                    <div class="search-field">
+
+                        <div class="field-label">
+                            TO
+                        </div>
+
+
+                        <select
+                            name="Destination"
+                            class="top-input"
+                            required
+                        >
+
+                            <option value="Cochin">
+                                Cochin
+                            </option>
+
+                            <option value="Banglore">
+                                Banglore
+                            </option>
+
+                            <option value="Delhi">
+                                Delhi
+                            </option>
+
+                            <option value="Hyderabad">
+                                Hyderabad
+                            </option>
+
+                            <option value="Kolkata">
+                                Kolkata
+                            </option>
+
+                            <option value="New Delhi">
+                                New Delhi
+                            </option>
+
+                        </select>
+
+
+                        <div class="field-sub">
+                            Destination city
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         DEPARTURE
+                    ======================================= -->
+
+                    <div class="search-field">
+
+                        <div class="field-label">
+                            DEPARTURE
+                        </div>
+
+
+                        <input
+                            type="datetime-local"
+                            name="Dep_Time"
+                            class="top-input"
+                            required
+                        >
+
+
+                        <div class="field-sub">
+                            Date & Time
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         ARRIVAL
+                    ======================================= -->
+
+                    <div class="search-field">
+
+                        <div class="field-label">
+                            ARRIVAL
+                        </div>
+
+
+                        <input
+                            type="datetime-local"
+                            name="Arrival_Time"
+                            class="top-input"
+                            required
+                        >
+
+
+                        <div class="field-sub">
+                            Date & Time
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         STOPS
+                    ======================================= -->
+
+                    <div class="search-field">
+
+                        <div class="field-label">
+                            STOPS
+                        </div>
+
+
+                        <select
+                            name="stops"
+                            class="top-input"
+                            required
+                        >
+
+                            <option value="0">
+                                Non-Stop
+                            </option>
+
+                            <option value="1">
+                                1 Stop
+                            </option>
+
+                            <option value="2">
+                                2 Stops
+                            </option>
+
+                            <option value="3">
+                                3 Stops
+                            </option>
+
+                            <option value="4">
+                                4 Stops
+                            </option>
+
+                        </select>
+
+
+                        <div class="field-sub">
+                            Number of stops
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         AIRLINE
+                    ======================================= -->
+
+                    <div class="search-field">
+
+                        <div class="field-label">
+                            AIRLINE
+                        </div>
+
+
+                        <select
+                            name="airline"
+                            class="top-input"
+                            required
+                        >
+
+                            <option value="Jet Airways">
+                                Jet Airways
+                            </option>
+
+                            <option value="IndiGo">
+                                IndiGo
+                            </option>
+
+                            <option value="Air India">
+                                Air India
+                            </option>
+
+                            <option value="Multiple carriers">
+                                Multiple carriers
+                            </option>
+
+                            <option value="SpiceJet">
+                                SpiceJet
+                            </option>
+
+                            <option value="Vistara">
+                                Vistara
+                            </option>
+
+                            <option value="Air Asia">
+                                Air Asia
+                            </option>
+
+                            <option value="GoAir">
+                                GoAir
+                            </option>
+
+                            <option value="Jet Airways Business">
+                                Jet Airways Business
+                            </option>
+
+                            <option value="Trujet">
+                                Trujet
+                            </option>
+
+                        </select>
+
+
+                        <div class="field-sub">
+                            Select airline
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         PREDICT
+                    ======================================= -->
+
+                    <button
+                        type="submit"
+                        class="search-action"
+                    >
+
+                        PREDICT
+
+                    </button>
+
+
+                </div>
+
             </div>
-          </div>
+
+        </form>
+
+
+
+        <!-- =================================================
+             SPECIAL FARES
+        ================================================== -->
+
+        <div class="special-fares">
+
+
+            <div class="special-title">
+
+                Special Fares
+
+                <br>
+
+                <span style="font-weight:400;">
+                    Optional
+                </span>
+
+            </div>
+
+
+            <div class="special-option">
+
+                <strong>
+                    Students
+                </strong>
+
+                Extra baggage & discounts
+
+            </div>
+
+
+            <div class="special-option">
+
+                <strong>
+                    Defence Forces
+                </strong>
+
+                Special fare benefits
+
+            </div>
+
+
+            <div class="special-option">
+
+                <strong>
+                    Senior Citizens
+                </strong>
+
+                Exclusive savings
+
+            </div>
+
+
+            <div class="special-option">
+
+                <strong>
+                    Corporate
+                </strong>
+
+                Business travel benefits
+
+            </div>
+
         </div>
-      </div>
 
-      <button type="submit" class="btn btn-primary btn-lg btn-block crazy-btn">
-        🚀 Predict My Fare
-      </button>
-    </form>
+    </section>
 
-    <div class="mt-5 fade-in">
-      <h3 class="glow-text">{{ prediction_text }}</h3>
-      <p class="footer">© 2025 Flight Price Predictor</p>
-    </div>
-  </div>
+
+
+    <!-- =====================================================
+         PREDICTION RESULT
+    ===================================================== -->
+
+    <main class="prediction-area">
+
+        <div class="section-container">
+
+
+            <div class="breadcrumb">
+
+                Home
+
+                &nbsp;›&nbsp;
+
+                <span>
+                    Flights
+                </span>
+
+                &nbsp;›&nbsp;
+
+                Fare Prediction
+
+            </div>
+
+
+
+            {% if prediction_text %}
+
+            <div class="result-card fade-in">
+
+
+                <div class="result-label">
+                    Estimated Flight Fare
+                </div>
+
+
+                <div class="result-value">
+
+                    {{ prediction_text }}
+
+                </div>
+
+
+                <div class="result-note">
+
+                    Estimated using historical flight data
+                    and a machine-learning regression model.
+
+                </div>
+
+
+            </div>
+
+            {% else %}
+
+            <div class="no-result">
+
+                Select your flight details above and click
+                <strong>Predict</strong> to estimate the fare.
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FLIGHT OFFERS
+    ===================================================== -->
+
+    <section
+        class="offers-section"
+        id="offers"
+    >
+
+        <div class="section-container">
+
+
+            <h2 class="section-heading">
+                Flight Insights
+            </h2>
+
+
+            <p class="section-subheading">
+
+                Make smarter travel decisions with
+                SkyFare's data-driven predictions.
+
+            </p>
+
+
+
+            <div class="offer-grid">
+
+
+                <div class="offer-card">
+
+                    <div class="offer-tag">
+                        SkyFare Insight
+                    </div>
+
+
+                    <h3>
+                        Compare Before You Book
+                    </h3>
+
+
+                    <p>
+
+                        Check the estimated fare before
+                        making your final booking decision.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="offer-card">
+
+                    <div class="offer-tag">
+                        Smart Prediction
+                    </div>
+
+
+                    <h3>
+                        Know Your Expected Fare
+                    </h3>
+
+
+                    <p>
+
+                        Understand expected ticket prices
+                        using historical flight patterns.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="offer-card">
+
+                    <div class="offer-tag">
+                        Machine Learning
+                    </div>
+
+
+                    <h3>
+                        Data-Driven Estimates
+                    </h3>
+
+
+                    <p>
+
+                        A trained regression model estimates
+                        fares from selected flight features.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HOW IT WORKS
+    ===================================================== -->
+
+    <section
+        class="how-section"
+        id="how-it-works"
+    >
+
+        <div class="section-container">
+
+
+            <h2 class="section-heading">
+                How SkyFare Works
+            </h2>
+
+
+            <p class="section-subheading">
+
+                Three simple steps to estimate your flight fare.
+
+            </p>
+
+
+
+            <div class="steps">
+
+
+                <div class="step">
+
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+
+                    <h3>
+                        Enter Flight Details
+                    </h3>
+
+
+                    <p>
+
+                        Select your departure,
+                        destination, dates, stops
+                        and airline.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="step">
+
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+
+                    <h3>
+                        Model Analyses Data
+                    </h3>
+
+
+                    <p>
+
+                        The selected features are processed
+                        and passed to the trained machine-learning
+                        model.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="step">
+
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+
+                    <h3>
+                        Get Estimated Fare
+                    </h3>
+
+
+                    <p>
+
+                        SkyFare returns an estimated ticket
+                        price based on historical flight data.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         WHY SKYFARE
+    ===================================================== -->
+
+    <section class="why-section">
+
+
+        <div class="section-container">
+
+
+            <h2 class="section-heading">
+                Why Use SkyFare?
+            </h2>
+
+
+            <p class="section-subheading">
+
+                An end-to-end machine-learning application
+                for flight fare estimation.
+
+            </p>
+
+
+
+            <div class="why-grid">
+
+
+                <div class="why-card">
+
+                    <h3>
+                        Machine Learning
+                    </h3>
+
+
+                    <p>
+
+                        Uses a trained regression model
+                        to estimate flight fares.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="why-card">
+
+                    <h3>
+                        Fast Prediction
+                    </h3>
+
+
+                    <p>
+
+                        Get an estimated fare instantly
+                        after submitting your flight details.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="why-card">
+
+                    <h3>
+                        Simple Interface
+                    </h3>
+
+
+                    <p>
+
+                        A flight-search inspired interface
+                        keeps the prediction process simple.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="why-card">
+
+                    <h3>
+                        Data Driven
+                    </h3>
+
+
+                    <p>
+
+                        Predictions are generated from
+                        patterns learned from historical data.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer class="footer">
+
+
+        <div class="footer-grid">
+
+
+            <!-- ABOUT -->
+
+            <div>
+
+                <div class="footer-brand">
+
+                    ✈ SkyFare Predictor
+
+                </div>
+
+
+                <div class="footer-about">
+
+                    An AI-powered flight fare prediction
+                    application that estimates ticket prices
+                    using machine learning and historical
+                    flight data.
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SKYFARE -->
+
+            <div>
+
+                <h4>
+                    SkyFare
+                </h4>
+
+
+                <a href="#">
+                    Home
+                </a>
+
+
+                <a href="#prediction-form">
+                    Predict Fare
+                </a>
+
+
+                <a href="#how-it-works">
+                    How It Works
+                </a>
+
+            </div>
+
+
+
+            <!-- EXPLORE -->
+
+            <div>
+
+                <h4>
+                    Explore
+                </h4>
+
+
+                <a href="#offers">
+                    Flight Insights
+                </a>
+
+
+                <a href="#offers">
+                    Offers
+                </a>
+
+
+                <a href="#how-it-works">
+                    About Model
+                </a>
+
+            </div>
+
+
+
+            <!-- TECHNOLOGY -->
+
+            <div>
+
+                <h4>
+                    Technology
+                </h4>
+
+
+                <a href="#">
+                    Machine Learning
+                </a>
+
+
+                <a href="#">
+                    Random Forest
+                </a>
+
+
+                <a href="#">
+                    Flask Application
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="footer-bottom">
+
+            © 2026 SkyFare Predictor
+            · AI-Powered Flight Fare Prediction
+
+        </div>
+
+    </footer>
+
 
 </body>
 
