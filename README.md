@@ -1,59 +1,26 @@
 # ✈️ SkyFare Predictor
 
-An end-to-end Machine Learning web application that predicts flight ticket prices using **Random Forest Regression**. The application allows users to enter flight details through a clean web interface and instantly predicts the estimated airfare.
+An end-to-end Machine Learning web application that predicts flight ticket prices, built on a cleaned data pipeline, a compared/validated model selection, and an sklearn `Pipeline` deployed via Flask.
 
 ---
 
 ## 🌐 Live Demo
 
 🚀 https://skyfare-predictor.onrender.com
+*(redeploy after pushing these changes — see Deployment section)*
 
 ---
 
-## 📸 Preview
+## 🛠️ Tech Stack
 
-![SkyFare Predictor](images/preview.png)
-
----
-
-# ✨ Features
-
-- Predict flight ticket prices instantly
-- User-friendly Flask web interface
-- Random Forest Regression model
-- Feature Engineering & Data Preprocessing
-- Responsive UI
-- Deployed on Render
-- Real-time predictions
+**ML:** Python, Pandas, NumPy, Scikit-learn
+**Backend:** Flask, Gunicorn
+**Frontend:** HTML, CSS
+**Visualization:** Matplotlib, Seaborn
 
 ---
 
-# 🛠️ Tech Stack
-
-### Machine Learning
-- Python
-- Pandas
-- NumPy
-- Scikit-learn
-
-### Backend
-- Flask
-- Gunicorn
-
-### Frontend
-- HTML
-- CSS
-
-### Visualization
-- Matplotlib
-- Seaborn
-
-### Deployment
-- Render
-
----
-
-# 📂 Project Structure
+## 📂 Project Structure
 
 ```
 SkyFare-Predictor/
@@ -63,156 +30,93 @@ SkyFare-Predictor/
 │   ├── Test_set.xlsx
 │   └── Sample_submission.xlsx
 │
+├── results/
+│   ├── model_comparison.csv
+│   ├── feature_importance.csv
+│   └── eda_plots.png
+│
 ├── images/
 │   └── preview.png
 │
-├── static/
-│   └── css/
-│       └── styles.css
-│
-├── templates/
-│   └── home.html
+├── static/css/styles.css
+├── templates/home.html
 │
 ├── app.py
+├── train.py
+├── compare_xgboost.py
 ├── flight_price.ipynb
-├── flight_rf.pkl
+├── flight_price_pipeline.pkl
 ├── requirements.txt
 ├── Procfile
 ├── .python-version
-├── README.md
 └── LICENSE
 ```
 
 ---
 
-# 📊 Dataset
+## 🤖 Machine Learning Workflow
 
-The model is trained using historical Indian flight fare data.
-
-### Features
-
-- Airline
-- Date of Journey
-- Source
-- Destination
-- Route
-- Total Stops
-- Duration
-- Additional Information
-
-### Target
-
-- Price
-
-Dataset files are available inside the **Flight Fare** folder.
+1. **Data Cleaning** — removed 220 duplicate rows, dropped 1 row with missing `Route`/`Total_Stops`, fixed inconsistent category labels (`'No Info'` vs `'No info'`), removed 1 corrupted row (`Duration = '5m'` on a 2-stop flight)
+2. **Feature Engineering** — parsed journey date, departure/arrival time, and **duration directly from the airline's reported duration string** (not derived by subtracting timestamps, which breaks on overnight flights)
+3. **Preprocessing** — `ColumnTransformer` (one-hot encoding for Airline/Source/Destination) wrapped in an sklearn `Pipeline` — no manual if/elif encoding
+4. **Model Comparison** — Linear Regression vs Random Forest vs Gradient Boosting
+5. **Cross-Validation** — 5-fold CV on the winning model to confirm stability
+6. **Feature Importance** — inspected which features actually drive price
+7. **Deployment** — pipeline saved as a single `.pkl`, served via Flask
 
 ---
 
-# 🤖 Machine Learning Workflow
+## 📈 Results
 
-- Data Cleaning
-- Handling Missing Values
-- Feature Engineering
-- Label Encoding
-- Model Training
-- Random Forest Regression
-- Model Evaluation
-- Model Serialization using Pickle
-- Flask Deployment
+| Model | RMSE | MAE | R² |
+|---|---|---|---|
+| **Random Forest** | **1833.96** | **1137.39** | **0.837** |
+| Gradient Boosting | 2186.34 | 1532.13 | 0.769 |
+| Linear Regression | 2888.30 | 1998.04 | 0.597 |
 
----
+5-fold CV (Random Forest): mean RMSE ≈ **1992.85**, std ≈ **106.17**
 
-# 📈 Model
+Top features driving price: `Duration_total_mins` (42%), `Journey_day` (12%), `Airline_Jet Airways Business` (7%)
 
-**Algorithm Used**
-
-- Random Forest Regressor
-
-The trained model is stored as:
-
-```
-flight_rf.pkl
-```
+Full details in `results/` and in the write-up below.
 
 ---
 
-# 🚀 Installation
+## 🔧 What Changed From the Original Version
 
-Clone the repository
+- **Fixed a duration-calculation bug**: the original app computed duration as `abs(Arrival_hour - Dep_hour)`, which breaks for flights crossing midnight. Now computed correctly from full datetimes, matching how duration is parsed during training.
+- **Replaced ~250 lines of manual if/elif one-hot encoding** in `app.py` with an sklearn `Pipeline`, removing the risk of train/serve encoding mismatch.
+- **Added real model comparison** (previously only Random Forest was tried, with no baseline).
+- **Added 5-fold cross-validation** to confirm results aren't a lucky split.
+- **Capped Random Forest depth** (`max_depth=18`, `min_samples_leaf=2`) — this actually *improved* test RMSE (1917 → 1834) versus an unlimited-depth forest, while also shrinking the model file from 98MB to 40MB.
+
+---
+
+## 🚀 Installation
 
 ```bash
 git clone https://github.com/ayushhmishhra/SkyFare-Predictor.git
-```
-
-Move into the project directory
-
-```bash
 cd SkyFare-Predictor
-```
-
-Install dependencies
-
-```bash
 pip install -r requirements.txt
 ```
 
-Run the application
+**Retrain the model (optional — a trained pipeline is already included):**
+```bash
+python train.py
+```
 
+**Run the app:**
 ```bash
 python app.py
 ```
-
-Open your browser
-
-```
-http://127.0.0.1:5000
-```
+Open `http://127.0.0.1:5000`
 
 ---
 
-# 🧪 Example Prediction
+## 👨‍💻 Author
 
-### Input
+**Ayush Mishra** — [GitHub](https://github.com/ayushhmishhra)
 
-- Source : Delhi
-- Destination : Cochin
-- Airline : Jet Airways
-- Stops : Non-Stop
+## 📄 License
 
-### Output
-
-```
-Predicted Fare : ₹6697.60
-```
-
----
-
-# 🔮 Future Improvements
-
-- Live Flight API Integration
-- Airline Price Trend Analysis
-- Model Explainability
-- Docker Deployment
-- Cloud Database Support
-- User Authentication
-- Dark Mode UI
-
----
-
-# 👨‍💻 Author
-
-**Ayush Mishra**
-
-GitHub
-
-https://github.com/ayushhmishhra
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-⭐ If you found this project useful, don't forget to **Star** the repository.
+MIT License
